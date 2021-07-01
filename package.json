@@ -1,0 +1,26 @@
+{
+  "name": "@software-security-lab/chaum-pederson",
+  "version": "1.0.0",
+  "description": "Simple and basic non-interactive version of original Chaum-Pedersen proof which is developed for educational purposes.",
+  "main": "chaum-pedersen.js",
+  "scripts": {
+    "test": "echo 'test'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/iut-e-voting/chaum-pedersen.git"
+  },
+  "keywords": [
+    "Chaum-Pedersen",
+    "NIZKP",
+    "Non-Interactive",
+    "Zero-Knowledge",
+    "Proof"
+  ],
+  "author": "Golgolnia Milad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/iut-e-voting/chaum-pedersen/issues"
+  },
+  "homepage": "https://gitlab.com/iut-e-voting/chaum-pedersen#readme"
+}
