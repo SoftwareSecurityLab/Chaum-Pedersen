@@ -40,7 +40,7 @@ class ChaumPedersen{
      * if you have one or initialize with the Modulus and Generator separately.
      * @param {ElGamal|string|bigInteger.BigInteger} p - The ElGamal engine or the modulus of the
      * multiplicative group, if you pass ElGamal engine then you can leave the g as undefined.
-     * @param {string|bigInteger.BigInteger} g - The generator of the underlying multiplicative 
+     * @param {string|bigInteger.BigInteger} [g] - The generator of the underlying multiplicative 
      * group
      */
     constructor(p, g){
@@ -90,7 +90,7 @@ class ChaumPedersen{
      * Prove the secret exponent of 'm' is equal to secret exponent of 'x' and also prove that 
      * you know its value.
      * Based on Chaum-Pedersen protocol, the passed arguments should be in below form:
-     *      x = g^{r} mod p
+     *      x = g^{r} mod p &
      *      m = n^{r} mod p
      * @async
      * @param {bigInteger.BigInteger|string} r - The secret which you want to prove your knowledge
@@ -112,7 +112,7 @@ class ChaumPedersen{
      * Use this method to verify that prover knows the secret exponent of x and m and it is equal
      * for both of them.
      * Based on Chaum-Pedersen proof the passed parameters should be in below form:
-     *      x = g^{secret} mod p
+     *      x = g^{secret} mod p &
      *      m = n^{secret} mod p
      * @param {Proof} proof - The Chaum-Pedersen proof which is obtained by calling prove() method. 
      * @param {bigInteger.BigInteger|string} x - The first public info which you want to prove 

@@ -139,12 +139,14 @@ class Verifier{
          */
         let computedU = this.elgamal.power(proof.response);
         computedU = this.elgamal.multiply(computedU, grnrc);
+        log('U: ', computedU);
 
         /**
          * n^{response}*m^{nrc}:
          */
-        let computedV = this.elgamal.power(proof.response);
+        let computedV = n.modPow(proof.response, this.elgamal.modulus);
         computedV = this.elgamal.multiply(computedV, nrnrc);
+        log('V: ', computedV);
 
         return proof.U.equals(computedU) && proof.V.equals(computedV);
     }

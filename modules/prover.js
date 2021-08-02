@@ -98,10 +98,13 @@ class Prover{
         
         //Compute U:
         let commitment = await this.elgamal.randomGropuMember();
+
         let U = this.elgamal.power(commitment);
+        log('U: ', U.toString());
 
         //Compute V:
         let V = n.modPow(commitment, this.elgamal.modulus);
+        log('V: ', V.toString());
 
         /**
          * Apply the Fiat-Shamir heuristic:
