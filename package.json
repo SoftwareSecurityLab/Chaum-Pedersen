@@ -1,5 +1,5 @@
 {
-  "name": "@software-security-lab/chaum-pederson",
+  "name": "@software-security-lab/chaum-pedersen",
   "version": "1.0.0",
   "description": "Simple and basic non-interactive version of original Chaum-Pedersen proof which is developed for educational purposes.",
   "main": "chaum-pedersen.js",
