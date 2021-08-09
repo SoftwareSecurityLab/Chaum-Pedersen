@@ -14,7 +14,8 @@
 
 # Chaum-Pedersen NIZKP
 
-The non-interactive version of [original Chaum-Pedersen zero-knowledge proof][cp]. This project is purposed to be used with public key cryptosystem based on "Discrete Logarithm" such as ElGamal.
+The non-interactive version of [original Chaum-Pedersen zero-knowledge proof][cp].  
+This project is purposed to be used with public key cryptosystem based on "Discrete Logarithm" such as ElGamal.
 
 >Chaum-Pedersen proof is used to prove the equality of exponents of two modular exponentiation with different bases.
 
@@ -105,7 +106,7 @@ $\qquad$ `n` <sup>`r`</sup> `mod p = m`
 
 Throws an error if any of parameters is of wrong type.
 
-**NOTE:** For security sakes, we get rid of `r` as soon as we computes the Schnorr proof. So make sure you keep it safe yourself.
+**NOTE:** For security sakes, we get rid of `r` as soon as we computes the Chaum-Pedersen proof. So make sure you keep it safe yourself.
 
 ### `verify(proof, x, n, m)`
 * **`proof`:** Chaum-Pedersen Proof
@@ -132,7 +133,7 @@ Throws an error if any of parameters is of wrong type.
 
 One of the most usage of Chaum-Pedersen proof is verifying the validity of blind factor in [blinding operations][blinding].
 
-Hence we provided an example at [`./tests/blindFactorProof.js`] which shows you how you can use this module to verify blinding operation in [ElGamal Cryptosystem][eg].
+Hence we provided an example at [`./tests/blindFactorProof.js`][test] which shows you how you can use this module to verify blinding operation in [ElGamal Cryptosystem][eg].
 
 # Contributing
 Since this module is developed at [Software Security Lab][softsl], you can pull requests but merging it depends on [Software Security Lab][softsl] decision.  
@@ -158,9 +159,12 @@ This work is published under [ISC][isc] license./
 [np]: https://www.npmjs.com/
 [nj]: https://nodejs.org/en/
 [by]: https://browserify.org/
-
-[ourelg]: https:
-
+[ourelg]: https://www.npmjs.com/package/basic_simple_elgamal
 [bi]: https://www.npmjs.com/package/big-integer
 [blinding]: https://en.wikipedia.org/wiki/Blinding_(cryptography)
 [eg]: https://en.wikipedia.org/wiki/ElGamal_encryption
+[gitpage]: https://github.com/SoftwareSecurityLab/Chaum-Pedersen.git
+[softsl]: https://github.com/SoftwareSecurityLab
+[isc]: ./LICENSE
+[tmail]: mailto:maryam.mouzarani@gmail.com
+[test]: ./tests/blindFactorProof.js
