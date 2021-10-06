@@ -8,6 +8,7 @@ const ElGamal = require('basic_simple_elgamal');
 const bigInteger = require('big-integer');
 const debug = require('debug');
 const crypto = require('crypto');
+const jsHash = require('js-sha3');
 
 
 /**
@@ -37,7 +38,6 @@ const crypto = require('crypto');
 
 
 const log = debug('app::NIZKP::Chaum-Pedersen::Verifier');
-const hash = crypto.createHash('SHA3-512');
 
 
 /**
@@ -74,13 +74,24 @@ class Verifier{
      * @param {string|bigInteger.BigInteger} x - The first public info which you want to prove
      * your knowledge about its secret.
      * @param {string|bigInteger.BigInteger} n - The base of modular exponentiation in second
-     * publi info..
+     * public info..
      * @param {string|bigInteger.BigInteger} m - The second public info which you want to prove
      * your knowledge about its secret exponenet.
+     * @param {string|bigInteger.BigInteger} [g=generator] - The base of modular exponentiation in first 
+     * public info, default value is generator 'g'.
      * @returns {boolean} - Returns true if the provers knowledge verified and false otherwise.
      * @throws Will throw an error if any of argument is of wrong type.
      */
-    verify(proof, x, n, m){
+    verify(proof, x, n, m, g){
+
+        let hash = undefined;
+        if(global?.performance?.nodeTiming?.name)
+            hash = crypto.createHash('SHA3-512');
+        else{
+            hash = jsHash.sha3_512.create();
+            hash.digest = hash.hex;
+        }
+
         /**
          * Unify type of arguments:
          */
@@ -96,11 +107,17 @@ class Verifier{
             m = bigInteger(m);
         else if(! (m instanceof bigInteger))
             throw new Error('Wrong type of m passed, it should be of type string or big-integer.');
-        
+        if(typeof g === 'undefined')
+            g = bigInteger(this.elgamal.generator);
+        else if(typeof g === 'string')
+            g = bigInteger(g);
+        else if(! (g instanceof bigInteger))
+            throw new Error('Wrong type of g passed, it should be of type big-integer or string or undefined to use default value');
+
         /**
          * Pass correct parameters to hasing function:
          */
-        hash.update(this.elgamal.generator);
+        hash.update(g.toString());
         hash.update(x.toString());
         hash.update(m.toString());
         hash.update(proof.U.toString());
@@ -137,7 +154,7 @@ class Verifier{
         /**
          * g^{response}*x^{nrc}:
          */
-        let computedU = this.elgamal.power(proof.response);
+        let computedU = g.modPow(proof.response, this.elgamal.modulus);
         computedU = this.elgamal.multiply(computedU, grnrc);
         log('U: ', computedU);
 

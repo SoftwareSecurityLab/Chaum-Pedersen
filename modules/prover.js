@@ -8,6 +8,7 @@ const ElGamal = require('basic_simple_elgamal');
 const bigInteger = require('big-integer');
 const crypto = require('crypto');
 const debug = require('debug');
+const jsHash = require('js-sha3');
 
 
 /**
@@ -37,7 +38,6 @@ const debug = require('debug');
 
 
 const log = debug('app::NIZKP::Chaum-Pedersen::Prover');
-const hash = crypto.createHash('SHA3-512');
 
 
 /**
@@ -74,10 +74,20 @@ class Prover{
      * @param {string|bigInteger.BigInteger} x - The first public info which is computed by modular exponentiation.
      * @param {string|bigInteger.BigInteger} n - The base of second modular exponentiation.
      * @param {string|bigInteger.BigInteger} m - The second public info which is computed by modular exponentiation.
+     * @param {string|bigInteger.BigInteger} [g=generator] - The base of first modular exponentiation, default value is generator 'g'.
      * @returns {Promise<Proof>} - The resulted Chaum-Pedersen NIZKP.
      * @throws Will throw an error if any parameter is of wrong type
      */
-    async prove(r, x, n, m){
+    async prove(r, x, n, m, g){
+
+        let hash = undefined;
+        if(global?.performance?.nodeTiming?.name)
+            hash = crypto.createHash('SHA3-512');
+        else{
+            hash = jsHash.sha3_512.create();
+            hash.digest = hash.hex;
+        }
+
         //Convert all parameters to big-integer:
         if(typeof r === 'string')
             r = bigInteger(r);
@@ -95,11 +105,17 @@ class Prover{
             m = bigInteger(m);
         else if(! (m instanceof bigInteger))
             throw new Error('Wrong type of m passed, it should be of type big-integer or string.');
-        
+        if(typeof g === 'undefined')
+            g = bigInteger(this.elgamal.generator);
+        else if(typeof g === 'string')
+            g = bigInteger(g);
+        else if(! (g instanceof bigInteger))
+            throw new Error('Wrong type of g passed, it should be of type big-integer or string or undefined to use default value');
+
         //Compute U:
         let commitment = await this.elgamal.randomGropuMember();
 
-        let U = this.elgamal.power(commitment);
+        let U = g.modPow(commitment, this.elgamal.modulus);
         log('U: ', U.toString());
 
         //Compute V:
@@ -110,7 +126,7 @@ class Prover{
          * Apply the Fiat-Shamir heuristic:
          *  Pass necessary inputs so that to use "Strong" Fiat-Shamir heuristic.  
         */ 
-        hash.update(this.elgamal.generator);
+        hash.update(g.toString());
         hash.update(x.toString());
         hash.update(m.toString());
         hash.update(U.toString());
