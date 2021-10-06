@@ -4,8 +4,8 @@
   - [Methods](#methods)
     - [`ChaumPedersen(p)`](#chaumpedersenp)
     - [`ChaumPedersen(p, g)`](#chaumpedersenp-g)
-    - [`prove(r, x, n, m)`](#prover-x-n-m)
-    - [`verify(proof, x, n, m)`](#verifyproof-x-n-m)
+    - [`prove(r, x, n, m, [g])`](#prover-x-n-m-g)
+    - [`verify(proof, x, n, m, [g])`](#verifyproof-x-n-m-g)
 - [Example](#example)
 - [Contributing](#contributing)
 - [Support](#support)
@@ -85,11 +85,12 @@ Throws an error if one of `p` or `g` is not provided or is of wrong type.
 > Keep in mind the Chaum-Pedersen works over [Cyclic Group][cg] which can be determined by its generator and order.
 > Since we are using [Multiplicative Groups][mg] as [Cyclic Groups][cg], modulus `p` specifies the group order implicitly.
 
-### `prove(r, x, n, m)`
+### `prove(r, x, n, m, [g])`
 * **`r`:** `String` | [`big-integer`][bi]
 * **`x`:** `String` | [`big-integer`][bi]
 * **`n`:** `String` | [`big-integer`][bi]
 * **`m`:** `String` | [`big-integer`][bi]
+* **`g`:** `String` | [`big-integer`][bi]
 * **Returns:** Chaum-Pedersen Proof
 * **Async**
 * **Throws Error**
@@ -99,6 +100,7 @@ Produces a Chaum-Pedersen proof for you which you can use to prove your knowledg
 `r` is your secret which you wants to prove your knowledge about it without revealing it.  
 `x` is the result of first modular exponentiation:  
 $\qquad$ `g` <sup>`r`</sup> `mod p = x`  
+`g` is base of your first modular exponentiation which is optional. If it's not provided, we consider generator of group as its value.
 `n` is base of your second modular exponentiation.  
 `m` is the result of second modular exponentiation:  
 $\qquad$ `n` <sup>`r`</sup> `mod p = m`
@@ -107,11 +109,12 @@ Throws an error if any of parameters is of wrong type.
 
 **NOTE:** For security sakes, we get rid of `r` as soon as we computes the Chaum-Pedersen proof. So make sure you keep it safe yourself.
 
-### `verify(proof, x, n, m)`
+### `verify(proof, x, n, m, [g])`
 * **`proof`:** Chaum-Pedersen Proof
 * **`x`:** `String` | [`big-integer`][bi]
 * **`n`:** `String` | [`big-integer`][bi]
 * **`m`:** `String` | [`big-integer`][bi]
+* **`g`:** `String` | [`big-integer`][bi]
 * **Returns:** boolean
 * **Throws Error**
 
@@ -120,6 +123,7 @@ Verifies the knowledge of prover about equality of exponents of both modular exp
 `proof` is resulted from calling [`prove()`](#prover-x-n-m) method.  
 `x` is the result of first modular exponentiation:  
 $\qquad$ `g` <sup>`r`</sup> `mod p = x`  
+`g` is base of your first modular exponentiation which is optional. If it's not provided, we consider generator of group as its value.
 `n` is base of your second modular exponentiation.  
 `m` is the result of second modular exponentiation:  
 $\qquad$ `n` <sup>`r`</sup> `mod p = m`
