@@ -100,11 +100,13 @@ class ChaumPedersen{
      * @param {bigInteger.BigInteger|string} n - The base of second modular exponentiation. 
      * @param {bigInteger.BigInteger|string} m - The second public info which is computed by modular
      * exponentiation.
+     * @param {bigInteger.BigInteger|string} [g = g] - The base of first modular exponentiation. Default
+     * value is generator of cyclic group.
      * @returns {Promise<Proof>} - The resulted Chaum-Pedersen.
      * @throws Will throw an error if any of parameters is of wrong type. 
      */
-    async prove(r, x, n, m){
-        return (await this.prover.prove(r, x, n, m));
+    async prove(r, x, n, m, g){
+        return (await this.prover.prove(r, x, n, m, g));
     }
 
 
@@ -121,11 +123,13 @@ class ChaumPedersen{
      * public info 
      * @param {bigInteger.BigInteger|string} m - The second public info which you want to verify 
      * your knowledge about its secret exponent.
+     * @param {bigInteger.BigInteger|string} [g = g] - The base of first modular exponentiation. Default
+     * value is generator of cyclic group.
      * @returns {boolean} - Returns true if the provers knowledge verified and false otherwiase.
      * @throws Will throw an error if any of argument is of wrong type.
      */
-    verify(proof, x, n, m){
-        return this.verifier.verify(proof, x, n, m);
+    verify(proof, x, n, m, g){
+        return this.verifier.verify(proof, x, n, m, g);
     }
 
 }
